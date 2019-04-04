@@ -27,3 +27,6 @@ $(OBJDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT) $(INC)
 
 clear:
 	clear
+
+clean:
+	rm bin/*
