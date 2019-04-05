@@ -1,8 +1,12 @@
+#ifndef NODE_H
+#define NODE_H
+
+#include <iostream>
 #include <vector>
+#include <string>
 #include <iterator>
 #include <algorithm>
-
-int IDCount = 0;
+#include <map>
 
 struct Node {
 	int id;
@@ -12,70 +16,28 @@ struct Node {
 	
 	bool sorted;
 	
-	Node(std::string text = "", Node *parent = nullptr) :
-		id(IDCount++),
-		text(text),
-		parent(parent),
-		sorted(true) {};
+	Node(std::string = "", Node *parent = nullptr);
 	
-	inline bool isRoot() const {
+	inline bool isRoot() const
+	{
 		return this->parent == nullptr;
 	}
-	
-	inline int getID() const {
+	inline int getID() const
+	{
 		return this->id;
 	}
-	
-	inline std::string getText() const {
+	inline std::string getText() const
+	{
 		return this->text;
 	}
-	
-	void setText(const std::string text) {
-		this->text = text;
-	}
-	
-	Node *createNode(std::string text = "") {
-		return this->connectTo(new Node(text, this));
-	}
-	Node *connectTo(Node *node) {
-		this->neighbors.push_back(node);
-		this->sorted = false;
-		return node;
-	}
-	void sort() {
-		if (!this->sorted) {
-			std::sort(
-				this->neighbors.begin(),
-				this->neighbors.end());
-			
-			this->sorted = true;
-		}
-	}
-	std::map<int, std::vector<Node *>> neighborsInducedGraph() {
-		std::map<int, std::vector<Node *>> result;
-		
-		this->sort();
-		
-		for (auto source : this->neighbors) {
-			source->sort();
-			
-			std::set_intersection(
-				this->neighbors.begin(),
-				this->neighbors.end(),
-				source->neighbors.begin(),
-				source->neighbors.end(),
-				std::back_inserter(result[source->getID()]));
-		}
-		
-		return result;
-	}
-	void print() {
-		std::cout << this->id << ": \"" << this->text << '\"' << std::endl;
-		
-		for (auto node : this->neighbors) {
-			std::cout << node->getID() << ' ';
-		}
-		
-		std::cout << std::endl;
-	}
+
+
+	void setText(const std::string text);
+	Node *createNode(std::string text = "");
+	Node *connectTo(Node *node);
+	void sort();
+	std::map<int, std::vector<Node *>> neighborsInducedGraph();
+	void print();
 };
+
+#endif
